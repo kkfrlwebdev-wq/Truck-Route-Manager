@@ -1,0 +1,48 @@
+
+
+
+
+# Dependencies (Folders containing downloaded external libraries)
+# ---------------------------------------------------------------------
+node_modules/
+/venv/
+.venv/
+env/
+
+# ---------------------------------------------------------------------
+# Build Outputs & Compiled Files (Generated during compilation/bundling)
+# ---------------------------------------------------------------------
+dist/
+build/
+out/
+*.o
+*.pyc
+
+# ---------------------------------------------------------------------
+# Environment Variables & Secrets (NEVER commit these to Git)
+# ---------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+credentials.json
+
+# ---------------------------------------------------------------------
+# Logs & Runtime Caches (Temporary files created by running code)
+# ---------------------------------------------------------------------
+*.log
+npm-debug.log*
+.pytest_cache/
+.eslintcache
+
+# ---------------------------------------------------------------------
+# IDE & Editor Settings (Personal workspace configurations)
+# ---------------------------------------------------------------------
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.sln
+*.sw?
+
+*.tsbuildinfo

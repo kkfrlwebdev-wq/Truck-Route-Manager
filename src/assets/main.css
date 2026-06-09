@@ -1,0 +1,131 @@
+@import './reset.css';
+
+:root {
+  --background-color: #0c0c0c;
+  --card-background: #262626;
+  --text-color: #e6e6e6;
+  --secondary-text-color: #a6a6a6;
+
+  --primary-color: #00c6d7;
+  --primary-hover: #00e1f5;
+
+  --success-color: #00c6d7;
+  --success-hover: #00e1f5;
+
+  --error-color: #ff4444;
+  --error-hover: #ff6666;
+
+  --attention-color: #ffb800;
+
+  --secondary-color: #414141;
+  --border-color: #414141;
+  --input-background: #262626;
+
+  --shadow-color: rgba(0, 0, 0, 0.35);
+  --hover-background: #414141;
+
+  --chart-1: #00c6d7;
+  --chart-2: #ffb800;
+  --chart-3: #00e1f5;
+  --chart-4: #ff8800;
+  --chart-5: #00a8b8;
+}
+/* Застосовуємо перемінні до основних стилів */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+}
+
+/* Контейнер */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Заголовки */
+h1,
+h2,
+h3 {
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: var(--text-color);
+}
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+
+/* Кнопки */
+button {
+  background-color: var(--primary-color);
+  color: var(--card-background);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+}
+
+button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+}
+
+/* Поля введення */
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  transition: border-color 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Повідомлення */
+.error {
+  color: var(--error-color);
+  font-weight: 500;
+}
+
+.success {
+  color: var(--success-color);
+  font-weight: 500;
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+  .container {
+    padding: 8px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+  button {
+    padding: 8px 16px;
+  }
+}
