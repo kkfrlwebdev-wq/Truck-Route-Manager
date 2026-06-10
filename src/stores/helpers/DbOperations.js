@@ -12,12 +12,21 @@ import {
   setDoc,
   query,
   where,
-  documentId
+  documentId,
+  limit,
+  orderBy,
+  startAfter
 } from 'firebase/firestore/lite'
+
 
 class DbOperations {
   constructor(collectionTitle) {
     this.dbCollection = collection(firebaseDB,`/${collectionTitle}` )
+  }
+  getFiltersQuery(filters = []) {
+    return filters.map(({ fieldTitle, compareOperator, valueToCompare }) =>
+      where(fieldTitle, compareOperator, valueToCompare)
+    )
   }
   getListFromSnapshot(snapshot) {
     const list = []
@@ -29,9 +38,13 @@ class DbOperations {
     })
     return list
   }
-  loadItemsList() {
+  loadItemsList(filters = []) {
+    const q = filters.length
+      ? query(this.dbCollection, ...this.getFiltersQuery(filters))
+      : this.dbCollection
+
     return new Promise((resolve, reject) => {
-      getDocs(this.dbCollection)
+      getDocs(q)
         .then((querySnapshot) => {
           resolve(this.getListFromSnapshot(querySnapshot))
         })
@@ -64,7 +77,7 @@ class DbOperations {
         })
     })
   }
-  addItemToArray(id, arrayProperty, value) {
+  addItemToArray(id, arrayProperty, value, extraData = {}) {
     return new Promise((resolve, reject) => {
       this.getItemById(id).then((item) => {
         if (item.appointments) {
@@ -79,6 +92,7 @@ class DbOperations {
             })
         } else {
           this.addItemWithCustomId(id, {
+            ...extraData,
             [arrayProperty]: [value]
           })
             .then(() => {
@@ -159,6 +173,44 @@ class DbOperations {
       getDocs(q)
         .then((querySnapshot) => {
           resolve(this.getListFromSnapshot(querySnapshot))
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+
+  loadItemsPortion(pageSize, lastVisibleDoc, filters = []) {
+    return new Promise((resolve, reject) => {
+      const filtersQuery = this.getFiltersQuery(filters)
+      let q
+
+      if (lastVisibleDoc) {
+        q = query(
+          this.dbCollection,
+          ...filtersQuery,
+          orderBy(documentId()),
+          startAfter(lastVisibleDoc),
+          limit(pageSize)
+        )
+      } else {
+        q = query(
+          this.dbCollection,
+          ...filtersQuery,
+          orderBy(documentId()),
+          limit(pageSize)
+        )
+      }
+
+      getDocs(q)
+        .then((querySnapshot) => {
+          resolve({
+            items: this.getListFromSnapshot(querySnapshot),
+            lastVisibleDoc:
+              querySnapshot.docs[querySnapshot.docs.length - 1] || null,
+            hasMore: querySnapshot.docs.length === pageSize
+          })
         })
         .catch((error) => {
           reject(error)

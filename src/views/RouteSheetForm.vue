@@ -15,10 +15,6 @@ const fuelConsumptionPer100km = ref('444')
 const workedEngineHours = ref('555')
 const fuelConsumptionPerEngineHour = ref('666')
 
-
-
-
-
 async function add() {
     await machineWorkStore.addItem({
         date: new Date(),
@@ -30,11 +26,16 @@ async function add() {
         fuelConsumptionPerEngineHour: fuelConsumptionPerEngineHour.value
     })
 
-    await machineWorkStore.loadItemsList()
+    await machineWorkStore.loadItemsPortion()
+
+}
+
+function loadMore() {
+    machineWorkStore.loadItemsPortion()
 }
 
 onMounted(() => {
-    machineWorkStore.loadItemsList()
+    machineWorkStore.loadItemsPortion()
 })
 
 
@@ -62,10 +63,12 @@ function showDate(dateValue) {
                 <input type="text" placeholder="розхід на 1м.г" class="input" v-model="fuelConsumptionPerEngineHour">
             </div>
             <button type="button" class="button" @click="add">{{ $t('pages.sheet.buttons.calculate') }}</button>
+            <button type="button" class="button" @click="loadMore">loadMore</button>
         </form>
 
         <ol>
             <li v-for="item in machineWorkStore.getItemsList" :key="item.id">
+                <p>{{ item.departureMileage }}</p>
                 {{ showDate(item.date) }}
             </li>
         </ol>

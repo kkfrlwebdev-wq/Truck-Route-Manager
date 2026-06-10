@@ -16,15 +16,13 @@ export const useAuthStore = defineStore('auth', () => {
 
   const getUser = computed(() => user.value)
 
- 
- 
-
   function checkSession() {
     return new Promise((resolve) => {
       const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
         user.value = firebaseUser
         authReady.value = true
 
+       
         unsubscribe()
         resolve(firebaseUser)
       })
@@ -45,10 +43,14 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  function logOut() {
-    generalApiOperation({
+  async function logOut() {
+    await generalApiOperation({
       operation: () => authOperations.logout()
     })
+
+    const { useMachineWorkStore } = await import('./machineWork')
+    useMachineWorkStore().resetStore()
+
     user.value = null
   }
 

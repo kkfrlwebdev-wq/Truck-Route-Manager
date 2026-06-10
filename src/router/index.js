@@ -52,7 +52,7 @@ export const router = createRouter({
 
 router.beforeEach(async (to) => {
   if (to.meta?.requireAuth) {
-    if (!isAuthenticated())
+    if (!(await isAuthenticated()))
       return {
         name: 'login'
       }

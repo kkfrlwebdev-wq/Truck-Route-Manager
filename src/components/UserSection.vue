@@ -27,8 +27,8 @@ function onLogin() {
   })
 }
 
-function onLogout() {
-  authStore.logOut()
+async function onLogout() {
+  await authStore.logOut()
   router.push({
     name: 'login'
   })
